@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.screen-max-width {
+    margin-inline-start: auto;
+    margin-inline-end: auto;
+    position: relative;
+    max-width: 1120px;
+}
+
+
+.btn {
+    background-color: #0664A0;
+    color: white;
+    border: 2px solid #005f8a;
+    padding: 8px 20px;
+    border-radius: 5; 
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+    font-weight: 600;
+}
+
+.btn:hover {
+    background-color: #005f8a; 
+    color: white; 
+    border-color: #004e70;
+}
