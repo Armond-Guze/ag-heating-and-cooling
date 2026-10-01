@@ -238,3 +238,109 @@ textarea { min-height: 120px; resize: vertical; }
   html { scroll-behavior: auto; }
   *, *::before, *::after { transition: none !important; animation: none !important; }
 }
+
+/* Reference navigation: a dark announcement strip over a rounded white header. */
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+.site-chrome { position: relative; z-index: 5; background: #202020; }
+.announcement-bar { display: grid; grid-template-columns: 1fr minmax(300px, 560px) 1fr; align-items: center; gap: 24px; min-height: 44px; padding: 8px 30px; color: #fff; font-size: 11px; }
+.announcement-socials { display: flex; gap: 18px; align-items: center; }
+.announcement-socials a { display: flex; transition: opacity .2s, transform .2s; }
+.announcement-socials a:hover { opacity: .7; transform: translateY(-2px); }
+.announcement-socials svg { width: 15px; height: 15px; fill: currentColor; }
+.announcement-socials .instagram-icon { fill: none; stroke: currentColor; stroke-width: 1.8; }
+.announcement-socials .instagram-dot { fill: currentColor; stroke: none; }
+.announcement-message { display: grid; grid-template-columns: 30px 1fr 30px; align-items: center; gap: 18px; text-align: center; }
+.announcement-message button { display: grid; place-items: center; border: 0; background: none; color: inherit; min-height: 28px; font-size: 18px; cursor: pointer; }
+.announcement-message a { font-size: 12px; }
+.announcement-location { justify-self: end; color: #ddd; }
+.site-header { display: grid; grid-template-columns: 180px 1fr 180px; min-height: 108px; padding: 10px 30px; gap: 24px; border-radius: 24px 24px 0 0; border-bottom: 0; }
+.brand img { width: 126px; height: 84px; }
+.site-header nav { margin: 0; justify-content: center; gap: clamp(24px, 3vw, 44px); font-weight: 500; }
+.header-actions { display: flex; justify-content: flex-end; align-items: center; gap: 18px; }
+.header-phone { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 44px; }
+.header-phone svg, .menu-toggle svg { width: 23px; height: 23px; fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
+.site-header .nav-cta { min-height: 44px; margin: 0; padding: 12px 16px; font-size: 12px; white-space: nowrap; }
+.menu-toggle { display: none; }
+
+/* Photo-led service cards and Facebook profile, inspired by the reference feed. */
+.services-section .section-heading { max-width: 800px; text-align: left; margin-left: 0; }
+.services-section .section-heading p:not(.section-kicker) { max-width: 660px; margin-left: 0; }
+.facebook-profile { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin: 0 0 32px; }
+.profile-identity { display: inline-flex; align-items: center; gap: 18px; }
+.profile-avatar { position: relative; display: grid; place-items: center; width: 66px; height: 66px; padding: 7px; border: 2px solid var(--blue); border-radius: 50%; background: #fff; }
+.profile-avatar img { width: 100%; height: 100%; object-fit: contain; }
+.profile-avatar > span { position: absolute; right: -3px; bottom: -2px; display: grid; place-items: center; width: 21px; height: 21px; color: #fff; font-size: 17px; font-weight: 700; background: #0866ff; border: 2px solid var(--paper); border-radius: 50%; }
+.profile-identity strong { display: block; font-size: 17px; letter-spacing: -.03em; }
+.profile-identity small { display: block; margin-top: 3px; font-size: 11px; color: var(--muted); }
+.profile-follow { display: inline-flex; align-items: center; min-height: 40px; padding: 8px 21px; border: 1.5px solid var(--ink); border-radius: 30px; font-size: 12px; transition: background .2s, color .2s; }
+.profile-follow:hover { background: var(--ink); color: #fff; }
+.service-grid { gap: 20px; }
+.service-card { position: relative; min-height: 420px; padding: 0; border: 0; border-radius: 12px; background: #092746; color: #fff; isolation: isolate; }
+.service-card > img { position: absolute; inset: 0; width: 100%; height: 100%; aspect-ratio: auto; object-fit: cover; z-index: -2; transition: transform .5s; }
+.service-card::after { content: ''; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, #051a2d00 10%, #051a2d15 35%, #051a2de8 100%); }
+.service-card:hover { transform: none; box-shadow: none; }
+.service-card:hover > img { transform: scale(1.04); }
+.service-card-copy { display: flex; flex-direction: column; justify-content: flex-end; min-height: 420px; padding: 30px 24px; }
+.service-card h3 { margin: 0 0 12px; font-size: 26px; letter-spacing: -.035em; }
+.service-card p { margin: 0 0 22px; color: #e4edf4; font-size: 13px; }
+.service-card .text-link { margin: 0; min-height: 38px; padding-top: 12px; border-top: 1px solid #ffffff50; color: #fff; font-size: 12px; }
+.service-card .text-link::before { content: '↗'; position: absolute; top: 16px; right: 16px; display: grid; place-items: center; width: 30px; height: 30px; border: 1px solid #ffffff90; border-radius: 50%; font-size: 19px; background: #09274630; }
+
+.footer-main { grid-template-columns: minmax(210px, .26fr) minmax(0, .34fr) minmax(0, .4fr); column-gap: 40px; }
+.footer-brand { width: min(260px, 100%); }
+.footer-brand img { width: 100%; height: auto; border-radius: 14px; }
+.footer-contact { padding-left: clamp(28px, 4vw, 100px); }
+.footer-link-columns { padding-right: 0; column-gap: 28px; }
+.benefit-dots { display: none; }
+@media (max-width: 1100px) {
+  .site-header { grid-template-columns: 130px 1fr 44px; }
+  .site-header .nav-cta { display: none; }
+  .site-header nav { gap: 22px; font-size: 13px; }
+  .footer-main { grid-template-columns: 180px 1fr 1fr; column-gap: 24px; }
+  .footer-contact { padding-left: 24px; }
+  .service-card, .service-card-copy { min-height: 430px; }
+}
+@media (max-width: 760px) {
+  .announcement-bar { grid-template-columns: 1fr; min-height: 49px; padding: 8px 18px; }
+  .announcement-socials, .announcement-location { display: none; }
+  .announcement-message { grid-template-columns: 26px 1fr 26px; gap: 12px; }
+  .announcement-message a { font-size: 11px; }
+  .site-header { grid-template-columns: 44px 1fr 44px; min-height: 90px; padding: 8px 18px; gap: 12px; border-radius: 20px 20px 0 0; }
+  .brand { justify-self: center; }
+  .brand img { width: 102px; height: 72px; }
+  .menu-toggle { display: inline-flex; align-items: center; justify-content: flex-start; width: 44px; height: 44px; padding: 0; border: 0; color: var(--ink); background: none; cursor: pointer; }
+  .site-header nav { display: none; position: absolute; top: 100%; left: 0; right: 0; z-index: 10; width: 100%; flex-direction: column; align-items: stretch; gap: 0; padding: 14px 24px 24px; background: #fff; border-top: 1px solid var(--line); border-radius: 0 0 18px 18px; box-shadow: 0 18px 24px #09274615; }
+  .site-header nav.is-open { display: flex; }
+  .site-header nav a { padding: 14px 0; font-size: 15px; }
+  .site-header nav a::after { display: none; }
+  .header-actions { justify-content: flex-end; }
+  .header-phone { width: 44px; }
+  .services-section { overflow: hidden; padding-bottom: 58px; }
+  .services-section .section-heading { margin-bottom: 30px; }
+  .facebook-profile { margin-bottom: 28px; gap: 16px; }
+  .profile-identity { gap: 14px; }
+  .profile-avatar { width: 60px; height: 60px; }
+  .profile-identity strong { font-size: 16px; }
+  .service-grid { display: flex; gap: 12px; margin-right: calc(-1 * var(--gutter)); padding-right: var(--gutter); overflow-x: auto; scroll-snap-type: x mandatory; overscroll-behavior-x: contain; scrollbar-width: none; }
+  .service-grid::-webkit-scrollbar { display: none; }
+  .service-card { flex: 0 0 85%; min-width: 0; scroll-snap-align: start; scroll-snap-stop: always; }
+  .service-card, .service-card-copy { min-height: 420px; }
+  .service-card-copy { padding: 28px 24px; }
+  .service-card h3 { margin: 0 0 12px; font-size: 26px; }
+  .service-card p { margin: 0 0 22px; font-size: 13px; }
+  .service-card .text-link { margin: 0; font-size: 12px; }
+  .footer-main { grid-template-columns: 1fr; gap: 34px; }
+  .footer-brand { width: min(290px, 100%); justify-self: center; }
+  .footer-contact { padding: 32px 0 0; }
+  .footer-benefits { padding: 36px 0 30px; }
+  .footer-benefits-inner { display: flex; gap: 0; width: 100%; overflow-x: auto; scroll-snap-type: x mandatory; overscroll-behavior-x: contain; scrollbar-width: none; }
+  .footer-benefits-inner::-webkit-scrollbar { display: none; }
+  .footer-benefit, .footer-benefit:first-child { display: flex; flex: 0 0 100%; flex-direction: column; align-items: center; justify-content: center; gap: 20px; min-height: 136px; padding: 6px 24px; text-align: center; scroll-snap-align: start; scroll-snap-stop: always; }
+  .footer-benefit > svg { width: 24px; height: 24px; margin: 0; }
+  .footer-benefit h2 { font-size: 18px; margin-bottom: 7px; }
+  .footer-benefit p { font-size: 12px; }
+  .benefit-dots { display: flex; align-items: center; justify-content: center; gap: 2px; margin-top: 14px; }
+  .benefit-dots button { position: relative; display: grid; place-items: center; width: 24px; height: 30px; padding: 0; border: 0; background: none; cursor: pointer; }
+  .benefit-dots button::after { content: ''; width: 5px; height: 5px; border-radius: 50%; background: #202020; }
+  .benefit-dots button[aria-pressed="true"]::after { width: 8px; height: 8px; border: 1.5px solid #202020; background: #fff; }
+}

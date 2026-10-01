@@ -39,3 +39,62 @@ if (revealWindow && content) {
   updateReveal();
 }
 document.querySelector('#copyright-year').textContent = new Date().getFullYear();
+
+// Mobile menu keeps the reference's centered logo and useful HVAC actions.
+const menuToggle = document.querySelector('.menu-toggle');
+const navigation = document.querySelector('#primary-navigation');
+function closeMenu(returnFocus = false) {
+  navigation.classList.remove('is-open');
+  menuToggle.setAttribute('aria-expanded', 'false');
+  menuToggle.setAttribute('aria-label', 'Open navigation');
+  if (returnFocus) menuToggle.focus();
+}
+menuToggle.addEventListener('click', () => {
+  const open = !navigation.classList.contains('is-open');
+  navigation.classList.toggle('is-open', open);
+  menuToggle.setAttribute('aria-expanded', String(open));
+  menuToggle.setAttribute('aria-label', open ? 'Close navigation' : 'Open navigation');
+});
+navigation.addEventListener('click', (event) => {
+  if (event.target.closest('a')) closeMenu();
+});
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape' && navigation.classList.contains('is-open')) closeMenu(true);
+});
+document.addEventListener('click', (event) => {
+  if (!event.target.closest('.site-header')) closeMenu();
+});
+window.matchMedia('(min-width: 761px)').addEventListener('change', () => closeMenu());
+
+const announcements = [
+  ['A question? Let’s talk about your comfort.', '#request'],
+  ['Family owned. Proudly serving New Jersey.', '#about'],
+  ['Comfort done right. Call 732-500-5428.', 'tel:+17325005428'],
+];
+let announcementIndex = 0;
+function showAnnouncement(direction) {
+  announcementIndex = (announcementIndex + direction + announcements.length) % announcements.length;
+  const link = document.querySelector('#announcement-text');
+  link.textContent = announcements[announcementIndex][0];
+  link.href = announcements[announcementIndex][1];
+}
+document.querySelector('.announcement-prev').addEventListener('click', () => showAnnouncement(-1));
+document.querySelector('.announcement-next').addEventListener('click', () => showAnnouncement(1));
+
+// Snap carousel supports both swiping and the reference's dot controls.
+const benefitTrack = document.querySelector('.footer-benefits-inner');
+const benefitDots = [...document.querySelectorAll('[data-benefit]')];
+benefitDots.forEach((dot, index) => {
+  dot.addEventListener('click', () => {
+    benefitTrack.scrollTo({ left: benefitTrack.clientWidth * index, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
+  });
+});
+let benefitFrame = 0;
+benefitTrack.addEventListener('scroll', () => {
+  if (benefitFrame) return;
+  benefitFrame = requestAnimationFrame(() => {
+    benefitFrame = 0;
+    const active = Math.round(benefitTrack.scrollLeft / benefitTrack.clientWidth);
+    benefitDots.forEach((dot, index) => dot.setAttribute('aria-pressed', String(index === active)));
+  });
+}, { passive: true });

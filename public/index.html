@@ -47,21 +47,32 @@
       <textarea name="message"></textarea>
     </form>
 
+    <div class="site-chrome">
+    <div class="announcement-bar" aria-label="Company announcements">
+      <div class="announcement-socials" aria-label="Social profiles">
+        <a href="https://www.facebook.com/aghvacr" target="_blank" rel="noopener noreferrer" aria-label="A.G HVAC on Facebook"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 21v-8h3l.5-4H14V7c0-1.2.4-2 2-2h2V1.5c-.8-.2-2-.3-3-.3-3 0-5 1.8-5 5.2V9H7v4h3v8z" /></svg></a>
+        <a href="https://www.tiktok.com/@aghvacr" target="_blank" rel="noopener noreferrer" aria-label="A.G HVAC on TikTok"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 2h-4v13.5a3 3 0 1 1-3-3c.3 0 .6 0 .9.1V8.5a7 7 0 1 0 6.1 7V8.2a9 9 0 0 0 5 1.5V5.8A5.2 5.2 0 0 1 16 2z" /></svg></a>
+        <a href="https://www.instagram.com/aghvacr/" target="_blank" rel="noopener noreferrer" aria-label="A.G HVAC on Instagram"><svg viewBox="0 0 24 24" aria-hidden="true" class="instagram-icon"><rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r="1" class="instagram-dot" /></svg></a>
+      </div>
+      <div class="announcement-message">
+        <button type="button" class="announcement-prev" aria-label="Previous announcement">←</button>
+        <a href="#request" id="announcement-text" aria-live="polite">A question? Let’s talk about your comfort.</a>
+        <button type="button" class="announcement-next" aria-label="Next announcement">→</button>
+      </div>
+      <span class="announcement-location">New Jersey, USA</span>
+    </div>
     <header class="site-header" aria-label="Site header">
-      <a class="brand" href="#top" aria-label="A.G Heating and Cooling home">
-        <img
-          src="assets/ag-hvac-logo.png"
-          alt="A.G Heating and Cooling logo"
-        />
-      </a>
-      <nav aria-label="Primary navigation">
-        <a href="#about">About</a>
-        <a href="#services">Services</a>
-        <a href="#process">How It Works</a>
-        <a href="#request">Contact</a>
+      <button class="menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="primary-navigation"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h11M4 18h16" /></svg></button>
+      <a class="brand" href="#top" aria-label="A.G Heating and Cooling home"><img src="assets/ag-hvac-logo.png" alt="A.G Heating and Cooling logo" width="624" height="416" /></a>
+      <nav id="primary-navigation" aria-label="Primary navigation">
+        <a href="#about">About</a><a href="#services">Services</a><a href="#process">How It Works</a><a href="#request">Contact</a><a href="https://www.facebook.com/aghvacr" target="_blank" rel="noopener noreferrer">Facebook</a>
       </nav>
-      <a class="nav-cta" href="#request">Schedule Service</a>
+      <div class="header-actions">
+        <a class="header-phone" href="tel:+17325005428" aria-label="Call A.G HVAC at 732-500-5428"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 3 4 1 1 5-3 2a15 15 0 0 0 6 6l2-3 5 1 1 4c-1 4-5 3-9 1A21 21 0 0 1 4 12C2 8 1 4 5 3Z" /></svg></a>
+        <a class="nav-cta" href="#request">Schedule Service</a>
+      </div>
     </header>
+    </div>
 
     <main id="top" tabindex="-1">
       <section class="hero" aria-labelledby="hero-title">
@@ -164,42 +175,57 @@
             process is simple and built around the details that matter.
           </p>
         </div>
-        <div class="service-grid">
+        <div class="facebook-profile">
+          <a class="profile-identity" href="https://www.facebook.com/aghvacr" target="_blank" rel="noopener noreferrer" aria-label="Visit A.G HVAC on Facebook">
+            <span class="profile-avatar"><img src="assets/ag-hvac-logo.png" alt="" width="624" height="416" loading="lazy" /><span aria-hidden="true">f</span></span>
+            <span><strong>@aghvacr</strong><small>A.G HVAC · On Facebook</small></span>
+          </a>
+          <a class="profile-follow" href="https://www.facebook.com/aghvacr" target="_blank" rel="noopener noreferrer">Follow <span class="sr-only">A.G HVAC on Facebook</span></a>
+        </div>
+        <div class="service-grid" role="region" aria-label="Heating and cooling services" tabindex="0">
           <article class="service-card" id="installation">
             <img src="assets/photos/installation-system.jpg" alt="HVAC system installation work" />
+            <div class="service-card-copy">
             <h3>Installation</h3>
             <p>
               Energy-conscious heating and cooling installs for homes and small
               commercial spaces.
             </p>
             <a class="text-link" href="#request">Plan an installation <span aria-hidden="true">↗</span></a>
+            </div>
           </article>
           <article class="service-card" id="repairs">
             <img src="assets/photos/repair-gauges.jpg" alt="Technician checking AC gauges" />
+            <div class="service-card-copy">
             <h3>Repairs</h3>
             <p>
               Fast help for weak airflow, warm air, noisy equipment, shutdowns,
               and system trouble.
             </p>
             <a class="text-link" href="#request">Request a repair <span aria-hidden="true">↗</span></a>
+            </div>
           </article>
           <article class="service-card" id="maintenance">
             <img src="assets/photos/maintenance-ductwork.jpg" alt="Clean HVAC ductwork and filter system" />
+            <div class="service-card-copy">
             <h3>Maintenance</h3>
             <p>
               Seasonal tune-ups that help prevent breakdowns and keep equipment
               running smoothly.
             </p>
             <a class="text-link" href="#request">Schedule maintenance <span aria-hidden="true">↗</span></a>
+            </div>
           </article>
           <article class="service-card" id="upgrades">
             <img src="assets/photos/upgrade-heat-pump.jpg" alt="Modern outdoor heat pump upgrade" />
+            <div class="service-card-copy">
             <h3>Upgrades</h3>
             <p>
               Replacement and upgrade requests for smarter, cleaner, more efficient
               comfort systems.
             </p>
             <a class="text-link" href="#request">Explore an upgrade <span aria-hidden="true">↗</span></a>
+            </div>
           </article>
         </div>
       </section>
@@ -315,7 +341,7 @@
 
     <footer class="site-footer" aria-label="Site footer">
       <div class="footer-benefits">
-        <div class="footer-benefits-inner">
+        <div class="footer-benefits-inner" role="region" aria-label="A.G HVAC service highlights" tabindex="0">
           <div class="footer-benefit">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 14v-3a9 9 0 0 1 18 0v3M3 13h3v7H3zm15 0h3v7h-3z" /></svg>
             <div><h2>Personal service</h2><p>Here to help, from the first call.</p></div>
@@ -333,11 +359,17 @@
             <div><h2>Licensed expertise</h2><p>NJ Master HVAC/R service.</p></div>
           </div>
         </div>
+        <div class="benefit-dots" aria-label="Choose a service highlight">
+          <button type="button" aria-label="Personal service" aria-pressed="true" data-benefit="0"></button>
+          <button type="button" aria-label="Local and family owned" aria-pressed="false" data-benefit="1"></button>
+          <button type="button" aria-label="Year-round comfort" aria-pressed="false" data-benefit="2"></button>
+          <button type="button" aria-label="Licensed expertise" aria-pressed="false" data-benefit="3"></button>
+        </div>
       </div>
       <div class="footer-reveal-window">
         <div class="footer-reveal-content">
           <div class="footer-main">
-            <a class="footer-brand" href="#top" aria-label="A.G HVAC home"><img src="assets/ag-hvac-logo.png" alt="AG HVAC LLC" width="624" height="416" loading="lazy" /></a>
+            <a class="footer-brand" href="tel:+17325005428" aria-label="Call AG HVAC at 732-500-5428"><img src="assets/ag-hvac-business-card.jpg" alt="AG HVAC LLC. Residential and commercial heating and cooling. Installations, service and maintenance. 732-500-5428. AGHVACNJ.COM. NJ Master HVAC/R Lic. 19HC00963100. Comfort done right." width="624" height="624" loading="lazy" /></a>
             <div class="footer-link-columns">
               <nav class="footer-link-group" aria-labelledby="footer-services-title">
                 <h2 id="footer-services-title">Services</h2>
