@@ -1,0 +1,22 @@
+{
+  "devFiles": [],
+  "ampDevFiles": [],
+  "polyfillFiles": [
+    "static/chunks/0p8f_next_dist_build_polyfills_polyfill-nomodule.js"
+  ],
+  "lowPriorityFiles": [],
+  "rootMainFiles": [
+    "static/chunks/[turbopack]_browser_dev_hmr-client_hmr-client_ts_00nwqab._.js",
+    "static/chunks/0p8f_next_dist_compiled_next-devtools_index_0ov93rc.js",
+    "static/chunks/0p8f_next_dist_compiled_react-dom_1wkq_2g._.js",
+    "static/chunks/0p8f_next_dist_compiled_react-server-dom-turbopack_10gdtf6._.js",
+    "static/chunks/0p8f_next_dist_compiled_1lm3gle._.js",
+    "static/chunks/0p8f_next_dist_client_0opqfiu._.js",
+    "static/chunks/0p8f_next_dist_0lugro7._.js",
+    "static/chunks/0p8f_@swc_helpers_cjs_0ee8tg-._.js",
+    "static/chunks/ag-hvac-website_1anvha4._.js",
+    "static/chunks/turbopack-ag-hvac-website_0bvf-29._.js"
+  ],
+  "pages": {},
+  "ampFirstPages": []
+}
