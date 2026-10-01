@@ -1,0 +1,55 @@
+/* HVAC carousel follows the photo banner reference while retaining Armoze typography. */
+.site-header.storefront-navigation .brand { width: 126px; height: 84px; }
+.site-header.storefront-navigation .brand img { width: 126px; height: 84px; }
+.site-footer .footer-brand, .site-footer .footer-brand img { width: 112px; }
+.site-footer .footer-main { grid-template-columns: minmax(128px,.14fr) minmax(0,.36fr) minmax(0,.5fr); }
+.hvac-banner { --banner-width: min(76vw,1600px); --banner-gap: 24px; position: relative; overflow: hidden; padding: 26px 0; color: #fff; background: #0754a6; }
+.hvac-banner-track { display: flex; gap: var(--banner-gap); margin-left: calc((100% - var(--banner-width)) / 2); transition: transform 700ms cubic-bezier(.22,.72,.22,1); }
+.hvac-banner-slide { position: relative; flex: 0 0 var(--banner-width); min-width: 0; height: clamp(590px,38vw,760px); overflow: hidden; border-radius: 16px; background: #092746; }
+.hvac-banner-slide > img { width: 100%; height: 100%; object-fit: cover; }
+.hvac-banner-slide::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg,rgba(0,17,34,.06) 10%,rgba(0,17,34,.23) 32%,rgba(0,17,34,.85) 100%),linear-gradient(90deg,rgba(0,17,34,.35),transparent 75%); }
+.hvac-banner-content { position: absolute; z-index: 1; left: 6%; right: 6%; bottom: 116px; display: flex; align-items: end; justify-content: space-between; gap: 36px; }
+.hvac-banner-copy { max-width: 760px; }
+.banner-eyebrow { margin: 0 0 14px; font-size: 12px; font-weight: 600; letter-spacing: .13em; text-transform: uppercase; }
+.hvac-banner h1, .hvac-banner h2 { margin: 0; max-width: 20ch; color: #fff; font-size: clamp(36px,3.2vw,64px); font-weight: 600; line-height: 1.08; letter-spacing: -.045em; text-transform: uppercase; text-wrap: balance; }
+.banner-description { max-width: 45ch; margin: 18px 0; font-size: 15px; line-height: 1.6; color: #fff; }
+.banner-details { display: flex; flex-wrap: wrap; gap: 8px 16px; padding: 0; margin: 0; list-style: none; font-size: 12px; line-height: 1.5; }
+.banner-details li:last-child { flex-basis: 100%; font-weight: 600; }
+.banner-details li::before { content: '✓'; padding-right: 7px; }
+.banner-actions { display: grid; flex: 0 0 232px; gap: 12px; }
+.banner-actions a { display: flex; align-items: center; justify-content: center; min-height: 50px; padding: 13px 24px; border-radius: 99px; background: #fff; color: #181818; font-family: var(--font-announcement),Arial,sans-serif; font-size: 14px; font-weight: 500; text-align: center; transition: background-color 280ms ease; }
+.banner-actions a:hover { background: #e9eef4; }
+.banner-controls { position: absolute; z-index: 2; bottom: 48px; left: calc((100% - var(--banner-width))/2 + var(--banner-width)*.06); width: calc(var(--banner-width)*.88); display: flex; align-items: center; justify-content: space-between; padding-top: 18px; border-top: 1px solid #ffffff35; }
+.banner-controls button { display: grid; place-items: center; border: 0; color: #fff; background: transparent; padding: 0; width: 44px; height: 40px; cursor: pointer; }
+.banner-controls svg { width: 28px; height: 28px; }
+.banner-controls-end { display: flex; gap: 10px; }
+.banner-pause svg { width: 18px; height: 18px; }
+.banner-dots { display: flex; gap: 2px; }
+.banner-dots button { width: 24px; }
+.banner-dots span { width: 5px; height: 5px; border-radius: 50%; background: #fff; }
+.banner-dots button[aria-pressed=true] span { width: 8px; height: 8px; border: 1.5px solid #fff; background: transparent; }
+.hvac-banner a:focus-visible, .hvac-banner button:focus-visible { outline: 2px solid #fff; outline-offset: 4px; }
+@media (max-width:1100px) and (min-width:761px) {
+  .hvac-banner { --banner-width: 90vw; }
+  .hvac-banner-content { gap: 24px; }
+  .banner-actions { flex-basis: 210px; }
+}
+@media (max-width:760px) {
+  .site-header.storefront-navigation .brand, .site-header.storefront-navigation .brand img { width: 88px; height: 64px; }
+  .site-footer .footer-main { display: grid; grid-template-columns: 1fr; }
+  .site-footer .footer-brand, .site-footer .footer-brand img { width: 96px; }
+  .hvac-banner { --banner-width: calc(100vw - 28px); --banner-gap: 14px; padding: 14px 0; }
+  .hvac-banner-slide { height: 630px; border-radius: 11px; }
+  .hvac-banner-slide > img { object-position: 60% center; }
+  .hvac-banner-content { left: 20px; right: 20px; bottom: 78px; display: grid; gap: 24px; }
+  .hvac-banner h1, .hvac-banner h2 { font-size: clamp(26px,7.1vw,38px); line-height: 1.1; }
+  .banner-eyebrow { margin-bottom: 10px; font-size: 10px; }
+  .banner-description { font-size: 13px; line-height: 1.5; margin: 12px 0; }
+  .banner-details { display: grid; gap: 4px; font-size: 10px; }
+  .banner-actions { gap: 10px; }
+  .banner-actions a { min-height: 48px; font-size: 14px; }
+  .banner-controls { bottom: 30px; padding-top: 8px; border-top: 0; left: 34px; width: calc(100% - 68px); }
+  .banner-controls .banner-prev, .banner-controls .banner-next { display: none; }
+  .banner-dots { margin-left: -8px; }
+}
+@media (prefers-reduced-motion:reduce) { .hvac-banner-track { transition: none; } }

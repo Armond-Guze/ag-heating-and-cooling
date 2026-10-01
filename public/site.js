@@ -183,3 +183,79 @@ benefitTrack.addEventListener('scroll', () => {
     benefitDots.forEach((dot, index) => dot.setAttribute('aria-pressed', String(index === active)));
   });
 }, { passive: true });
+
+// Photo banner: three-second rotation, manual navigation, and an explicit pause control.
+const banner = document.querySelector('.hvac-banner');
+if (banner) {
+  const track = banner.querySelector('.hvac-banner-track');
+  const slides = [...track.children];
+  const leadingClone = slides[slides.length - 1].cloneNode(true);
+  const trailingClone = slides[0].cloneNode(true);
+  for (const clone of [leadingClone, trailingClone]) {
+    clone.classList.remove('is-active'); clone.classList.add('is-clone');
+    clone.setAttribute('aria-hidden', 'true'); clone.inert = true;
+    clone.querySelectorAll('[id]').forEach((element) => element.removeAttribute('id'));
+  }
+  track.prepend(leadingClone); track.append(trailingClone);
+  const dots = [...banner.querySelectorAll('[data-banner]')];
+  const pauseButton = banner.querySelector('.banner-pause');
+  const reduceBannerMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  let bannerIndex = 0;
+  let bannerTimer = 0;
+  let bannerPaused = reduceBannerMotion.matches;
+  let bannerFocus = false;
+  let bannerWrapping = false;
+  function showBanner(index, animate = true) {
+    if (bannerWrapping && animate) return;
+    const wrapping = animate && (index < 0 || index >= slides.length);
+    const physicalIndex = wrapping ? (index < 0 ? 0 : slides.length + 1) : ((index + slides.length) % slides.length) + 1;
+    bannerIndex = (index + slides.length) % slides.length;
+    const gap = parseFloat(getComputedStyle(track).gap) || 0;
+    if (!animate) track.style.transition = 'none';
+    track.style.transform = `translateX(-${physicalIndex * (slides[0].getBoundingClientRect().width + gap)}px)`;
+    if (!animate) requestAnimationFrame(() => requestAnimationFrame(() => { track.style.transition = ''; }));
+    if (wrapping) {
+      bannerWrapping = true;
+      setTimeout(() => { bannerWrapping = false; showBanner(bannerIndex, false); }, reduceBannerMotion.matches ? 0 : 700);
+    }
+    slides.forEach((slide, i) => {
+      slide.classList.toggle('is-active', i === bannerIndex);
+      slide.setAttribute('aria-hidden', String(i !== bannerIndex));
+      slide.inert = i !== bannerIndex;
+      dots[i].setAttribute('aria-pressed', String(i === bannerIndex));
+    });
+  }
+  function scheduleBanner() {
+    clearInterval(bannerTimer);
+    if (!bannerPaused && !bannerFocus && !document.hidden) bannerTimer = setInterval(() => showBanner(bannerIndex + 1), 3000);
+  }
+  banner.querySelector('.banner-prev').addEventListener('click', () => { showBanner(bannerIndex - 1); scheduleBanner(); });
+  banner.querySelector('.banner-next').addEventListener('click', () => { showBanner(bannerIndex + 1); scheduleBanner(); });
+  dots.forEach((dot, i) => dot.addEventListener('click', () => { showBanner(i); scheduleBanner(); }));
+  pauseButton.addEventListener('click', () => {
+    bannerPaused = !bannerPaused;
+    pauseButton.setAttribute('aria-label', bannerPaused ? 'Play banner slideshow' : 'Pause banner slideshow');
+    pauseButton.innerHTML = bannerPaused ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="m8 5 11 7-11 7Z" /></svg>' : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M9 5v14M15 5v14" /></svg>';
+    scheduleBanner();
+  });
+  banner.addEventListener('focusin', () => { bannerFocus = true; scheduleBanner(); });
+  banner.addEventListener('focusout', (event) => { if (!banner.contains(event.relatedTarget)) { bannerFocus = false; scheduleBanner(); } });
+  banner.addEventListener('keydown', (event) => {
+    if (!event.target.closest('[data-banner]')) return;
+    if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') {
+      event.preventDefault(); showBanner(bannerIndex + (event.key === 'ArrowRight' ? 1 : -1)); dots[bannerIndex].focus({preventScroll:true});
+    }
+  });
+  let touchStart = null;
+  banner.addEventListener('touchstart', (event) => { touchStart = event.touches[0].clientX; }, {passive:true});
+  banner.addEventListener('touchend', (event) => {
+    if (touchStart === null) return;
+    const delta = event.changedTouches[0].clientX - touchStart;
+    if (Math.abs(delta) > 45) { showBanner(bannerIndex + (delta < 0 ? 1 : -1)); scheduleBanner(); }
+    touchStart = null;
+  }, {passive:true});
+  new ResizeObserver(() => showBanner(bannerIndex, false)).observe(banner);
+  document.addEventListener('visibilitychange', scheduleBanner);
+  reduceBannerMotion.addEventListener('change', () => { bannerPaused = reduceBannerMotion.matches; pauseButton.setAttribute('aria-label', bannerPaused ? 'Play banner slideshow' : 'Pause banner slideshow'); scheduleBanner(); });
+  showBanner(0, false); scheduleBanner();
+}
