@@ -34,59 +34,143 @@ if (revealWindow && content) {
     if (bounds.bottom > window.innerHeight || bounds.top < 0) {
       revealWindow.scrollIntoView({ block: 'end', behavior: 'instant' });
       content.style.setProperty('--footer-reveal-offset', '0px');
+      content.getAnimations().forEach((animation) => animation.finish());
     }
   });
   updateReveal();
 }
 document.querySelector('#copyright-year').textContent = new Date().getFullYear();
 
-// Mobile menu keeps the reference's centered logo and useful HVAC actions.
+// DOM port of Armoze's MobileNavigationSheet and useStorefrontTopChromeState.
 const menuToggle = document.querySelector('.menu-toggle');
-const navigation = document.querySelector('#primary-navigation');
-function closeMenu(returnFocus = false) {
-  navigation.classList.remove('is-open');
+const navigationOverlay = document.querySelector('.navigation-sheet-overlay');
+const navigationSheet = document.querySelector('.navigation-sheet');
+const chrome = document.querySelector('.site-chrome');
+const header = document.querySelector('.site-header');
+let menuOpen = false;
+let previousFocus = null;
+function closeMenu(returnFocus = true) {
+  if (!menuOpen) return;
+  menuOpen = false;
+  navigationOverlay.classList.remove('is-open');
+  navigationOverlay.inert = true;
+  navigationOverlay.setAttribute('aria-hidden', 'true');
+  navigationSheet.removeAttribute('aria-modal');
+  document.body.classList.remove('mobile-menu-lock');
+  document.querySelector('main').inert = false;
+  document.querySelector('.site-footer').inert = false;
   menuToggle.setAttribute('aria-expanded', 'false');
   menuToggle.setAttribute('aria-label', 'Open navigation');
-  if (returnFocus) menuToggle.focus();
+  if (returnFocus) previousFocus?.focus({ preventScroll: true });
 }
 menuToggle.addEventListener('click', () => {
-  const open = !navigation.classList.contains('is-open');
-  navigation.classList.toggle('is-open', open);
-  menuToggle.setAttribute('aria-expanded', String(open));
-  menuToggle.setAttribute('aria-label', open ? 'Close navigation' : 'Open navigation');
+  if (menuOpen) { closeMenu(); return; }
+  previousFocus = document.activeElement;
+  menuOpen = true;
+  chrome.classList.remove('is-hidden');
+  navigationOverlay.inert = false;
+  navigationOverlay.setAttribute('aria-hidden', 'false');
+  navigationSheet.setAttribute('aria-modal', 'true');
+  navigationOverlay.classList.add('is-open');
+  document.body.classList.add('mobile-menu-lock');
+  document.querySelector('main').inert = true;
+  document.querySelector('.site-footer').inert = true;
+  menuToggle.setAttribute('aria-expanded', 'true');
+  menuToggle.setAttribute('aria-label', 'Close navigation');
+  navigationSheet.querySelector('button').focus({ preventScroll: true });
 });
-navigation.addEventListener('click', (event) => {
-  if (event.target.closest('a')) closeMenu();
-});
+document.querySelector('.navigation-sheet-handle').addEventListener('click', () => closeMenu());
+document.querySelector('.navigation-sheet-scrim').addEventListener('click', () => closeMenu());
+navigationSheet.addEventListener('click', (event) => { if (event.target.closest('a')) closeMenu(); });
 document.addEventListener('keydown', (event) => {
-  if (event.key === 'Escape' && navigation.classList.contains('is-open')) closeMenu(true);
+  if (!menuOpen) return;
+  if (event.key === 'Escape') { closeMenu(); return; }
+  if (event.key !== 'Tab') return;
+  const items = navigationSheet.querySelectorAll('a[href], button');
+  const first = items[0];
+  const last = items[items.length - 1];
+  if (event.shiftKey && (document.activeElement === first || !navigationSheet.contains(document.activeElement))) {
+    event.preventDefault(); last.focus();
+  } else if (!event.shiftKey && (document.activeElement === last || !navigationSheet.contains(document.activeElement))) {
+    event.preventDefault(); first.focus();
+  }
 });
-document.addEventListener('click', (event) => {
-  if (!event.target.closest('.site-header')) closeMenu();
-});
+let touchStartY = null;
+const handle = document.querySelector('.navigation-sheet-handle');
+handle.addEventListener('touchstart', (event) => { touchStartY = event.touches[0].clientY; }, { passive: true });
+handle.addEventListener('touchend', (event) => {
+  if (touchStartY !== null && event.changedTouches[0].clientY - touchStartY > 45) closeMenu();
+  touchStartY = null;
+}, { passive: true });
 window.matchMedia('(min-width: 761px)').addEventListener('change', () => closeMenu());
-
-const announcements = [
-  ['A question? Let’s talk about your comfort.', '#request'],
-  ['Family owned. Proudly serving New Jersey.', '#about'],
-  ['Comfort done right. Call 732-500-5428.', 'tel:+17325005428'],
-];
-let announcementIndex = 0;
-function showAnnouncement(direction) {
-  announcementIndex = (announcementIndex + direction + announcements.length) % announcements.length;
-  const link = document.querySelector('#announcement-text');
-  link.textContent = announcements[announcementIndex][0];
-  link.href = announcements[announcementIndex][1];
+let lastScrollY = window.scrollY;
+let chromeFrame = 0;
+function updateChrome() {
+  const nextScrollY = Math.max(0, window.scrollY);
+  const scrollDelta = nextScrollY - lastScrollY;
+  const isScrolled = header.classList.contains('is-scrolled') ? nextScrollY > 8 : nextScrollY > 24;
+  header.classList.toggle('is-scrolled', isScrolled);
+  if (menuOpen || nextScrollY < 92) chrome.classList.remove('is-hidden');
+  else if (scrollDelta > 3) chrome.classList.add('is-hidden');
+  else if (scrollDelta < 0) chrome.classList.remove('is-hidden');
+  lastScrollY = nextScrollY;
+  chromeFrame = 0;
 }
-document.querySelector('.announcement-prev').addEventListener('click', () => showAnnouncement(-1));
-document.querySelector('.announcement-next').addEventListener('click', () => showAnnouncement(1));
+window.addEventListener('scroll', () => {
+  if (!chromeFrame) chromeFrame = requestAnimationFrame(updateChrome);
+}, { passive: true });
+updateChrome();
 
-// Snap carousel supports both swiping and the reference's dot controls.
+// Armoze's announcement carousel: 500 ms directional motion, 2.5 s rotation.
+const promoCarousel = document.querySelector('.launch-promo-carousel');
+const promoSlides = [...document.querySelectorAll('.launch-promo-slide')];
+let activePromoIndex = 0;
+let transitionTimer = null;
+let rotationTimer = null;
+function showPromo(step) {
+  const currentIndex = activePromoIndex;
+  const nextIndex = (currentIndex + step + promoSlides.length) % promoSlides.length;
+  clearTimeout(transitionTimer);
+  promoSlides.forEach((slide, index) => {
+    slide.classList.toggle('is-previous', index === currentIndex);
+    slide.classList.toggle('is-active', index === nextIndex);
+    slide.setAttribute('aria-hidden', String(index !== nextIndex));
+    slide.inert = index !== nextIndex;
+  });
+  promoCarousel.classList.toggle('direction-forward', step > 0);
+  promoCarousel.classList.toggle('direction-backward', step < 0);
+  activePromoIndex = nextIndex;
+  transitionTimer = setTimeout(() => {
+    promoSlides.forEach((slide) => slide.classList.remove('is-previous'));
+    transitionTimer = null;
+  }, 520);
+}
+function restartRotation() {
+  clearInterval(rotationTimer);
+  rotationTimer = setInterval(() => {
+    if (!document.hidden && !promoCarousel.matches(':hover, :focus-within')) showPromo(1);
+  }, 2500);
+}
+document.querySelector('.announcement-prev').addEventListener('click', () => { showPromo(-1); restartRotation(); });
+document.querySelector('.announcement-next').addEventListener('click', () => { showPromo(1); restartRotation(); });
+restartRotation();
+
+// Same snap calculation and keyboard controls as Armoze's FooterBenefits.
 const benefitTrack = document.querySelector('.footer-benefits-inner');
 const benefitDots = [...document.querySelectorAll('[data-benefit]')];
+function showBenefit(index) {
+  benefitTrack.scrollTo({ left: index * benefitTrack.clientWidth, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
+}
 benefitDots.forEach((dot, index) => {
-  dot.addEventListener('click', () => {
-    benefitTrack.scrollTo({ left: benefitTrack.clientWidth * index, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
+  dot.addEventListener('click', () => showBenefit(index));
+  dot.addEventListener('keydown', (event) => {
+    const nextIndex = event.key === 'ArrowRight' ? Math.min(index + 1, benefitDots.length - 1)
+      : event.key === 'ArrowLeft' ? Math.max(index - 1, 0)
+        : event.key === 'Home' ? 0 : event.key === 'End' ? benefitDots.length - 1 : null;
+    if (nextIndex === null) return;
+    event.preventDefault();
+    showBenefit(nextIndex);
+    benefitDots[nextIndex].focus({ preventScroll: true });
   });
 });
 let benefitFrame = 0;
@@ -94,7 +178,8 @@ benefitTrack.addEventListener('scroll', () => {
   if (benefitFrame) return;
   benefitFrame = requestAnimationFrame(() => {
     benefitFrame = 0;
-    const active = Math.round(benefitTrack.scrollLeft / benefitTrack.clientWidth);
+    if (!benefitTrack.clientWidth) return;
+    const active = Math.max(0, Math.min(benefitDots.length - 1, Math.round(benefitTrack.scrollLeft / benefitTrack.clientWidth)));
     benefitDots.forEach((dot, index) => dot.setAttribute('aria-pressed', String(index === active)));
   });
 }, { passive: true });
