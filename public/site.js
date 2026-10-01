@@ -184,7 +184,7 @@ benefitTrack.addEventListener('scroll', () => {
   });
 }, { passive: true });
 
-// Photo banner: five-second rotation, manual navigation, and an explicit pause control.
+// Photo banner: ten-second rotation, manual navigation, and an explicit pause control.
 const banner = document.querySelector('.hvac-banner');
 if (banner) {
   const track = banner.querySelector('.hvac-banner-track');
@@ -216,7 +216,7 @@ if (banner) {
     if (!animate) requestAnimationFrame(() => requestAnimationFrame(() => { track.style.transition = ''; }));
     if (wrapping) {
       bannerWrapping = true;
-      setTimeout(() => { bannerWrapping = false; showBanner(bannerIndex, false); }, reduceBannerMotion.matches ? 0 : 1200);
+      setTimeout(() => { bannerWrapping = false; showBanner(bannerIndex, false); }, reduceBannerMotion.matches ? 0 : 2000);
     }
     slides.forEach((slide, i) => {
       slide.classList.toggle('is-active', i === bannerIndex);
@@ -227,7 +227,7 @@ if (banner) {
   }
   function scheduleBanner() {
     clearInterval(bannerTimer);
-    if (!bannerPaused && !bannerFocus && !document.hidden) bannerTimer = setInterval(() => showBanner(bannerIndex + 1), 5000);
+    if (!bannerPaused && !bannerFocus && !document.hidden) bannerTimer = setInterval(() => showBanner(bannerIndex + 1), 10000);
   }
   banner.querySelector('.banner-prev').addEventListener('click', () => { showBanner(bannerIndex - 1); scheduleBanner(); });
   banner.querySelector('.banner-next').addEventListener('click', () => { showBanner(bannerIndex + 1); scheduleBanner(); });

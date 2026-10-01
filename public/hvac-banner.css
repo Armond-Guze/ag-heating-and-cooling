@@ -4,7 +4,7 @@
 .site-footer .footer-brand, .site-footer .footer-brand img { width: 112px; }
 .site-footer .footer-main { grid-template-columns: minmax(128px,.14fr) minmax(0,.36fr) minmax(0,.5fr); }
 .hvac-banner { --banner-width: min(76vw,1600px); --banner-gap: 24px; position: relative; overflow: hidden; padding: 26px 0; color: #fff; background: #082e55; }
-.hvac-banner-track { display: flex; gap: var(--banner-gap); margin-left: calc((100% - var(--banner-width)) / 2); transition: transform 1200ms cubic-bezier(.22,.72,.22,1); }
+.hvac-banner-track { display: flex; gap: var(--banner-gap); margin-left: calc((100% - var(--banner-width)) / 2); transition: transform 2000ms cubic-bezier(.22,.72,.22,1); }
 .hvac-banner-slide { position: relative; flex: 0 0 var(--banner-width); min-width: 0; height: clamp(590px,38vw,760px); overflow: hidden; border-radius: 16px; background: #092746; }
 .hvac-banner-slide > img { width: 100%; height: 100%; object-fit: cover; }
 .hvac-banner-slide::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg,rgba(0,17,34,.06) 10%,rgba(0,17,34,.23) 32%,rgba(0,17,34,.85) 100%),linear-gradient(90deg,rgba(0,17,34,.35),transparent 75%); }
