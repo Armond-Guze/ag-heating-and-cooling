@@ -342,3 +342,8 @@ textarea { min-height: 120px; resize: vertical; }
   .benefit-dots button::after { content: ''; width: 5px; height: 5px; border-radius: 50%; background: #202020; }
   .benefit-dots button[aria-pressed="true"]::after { width: 8px; height: 8px; border: 1.5px solid #202020; background: #fff; }
 }
+
+/* The Facebook badge fills its frame; request links target the first form fields. */
+.profile-avatar { padding: 0; }
+.profile-avatar img { border-radius: 50%; }
+.contact-form:focus { outline: none; }

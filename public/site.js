@@ -259,3 +259,16 @@ if (banner) {
   reduceBannerMotion.addEventListener('change', () => { bannerPaused = reduceBannerMotion.matches; pauseButton.setAttribute('aria-label', bannerPaused ? 'Play banner slideshow' : 'Pause banner slideshow'); scheduleBanner(); });
   showBanner(0, false); scheduleBanner();
 }
+
+
+// Keep previously shared mobile request links aimed directly at the form fields.
+function alignLegacyRequestLink() {
+  if (location.hash !== '#request' || !window.matchMedia('(max-width: 760px)').matches) return;
+  const requestForm = document.getElementById('service-request');
+  if (!requestForm) return;
+  history.replaceState(null, '', '#service-request');
+  requestForm.scrollIntoView({block: 'start', behavior: 'instant'});
+  requestForm.focus({preventScroll: true});
+}
+window.addEventListener('hashchange', alignLegacyRequestLink);
+window.addEventListener('load', alignLegacyRequestLink);
